@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>موقعي الحالي</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding-top: 50px; background-color: #f0f0f0; }
+    button { padding: 12px 24px; font-size: 18px; cursor: pointer; }
+    #result { margin-top: 30px; font-size: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>📍 هل تريد معرفة موقعك الحالي؟</h2>
+  <button onclick="askPermission()">اضغط للمتابعة</button>
+
+  <div id="result"></div>
+
+  <script>
+    function askPermission() {
+      if (confirm("هل تريد الاستمرار؟")) {
+        getLocation();
+      }
+    }
+
+    function getLocation() {
+      const result = document.getElementById("result");
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const lat = position.coords.latitude.toFixed(6);
+            const lon = position.coords.longitude.toFixed(6);
+            result.innerHTML = `✅ إحداثياتك:<br>Latitude: ${lat}<br>Longitude: ${lon}`;
+          },
+          () => {
+            result.innerHTML = "❌ فشل الاستمرار";
+          },
+          { enableHighAccuracy: true }
+        );
+      } else {
+        result.innerHTML = "❌ المتصفح لا يدعم تحديد الموقع.";
+      }
+    }
+  </script>
+</body>
+</html>
